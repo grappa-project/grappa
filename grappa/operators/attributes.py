@@ -13,7 +13,7 @@ def be(ctx):
     Semantic attributes providing chainable declarative DSL
     for assertions.
     """
-    ctx.negate = False
+    pass
 
 
 @attribute(operators=(
