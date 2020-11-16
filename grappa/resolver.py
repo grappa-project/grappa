@@ -24,14 +24,14 @@ class OperatorResolver(object):
     def run_accessor(self, operator):
         # Register assertion function
         def assertion(subject):
-            self.ctx.subject = subject
+            operator.ctx.subject = subject
             return operator.run(subject)
 
         # Add assertion function
-        self.engine.add_assertion(assertion)
+        self.test._engine.add_assertion(assertion)
 
         # Self-trigger tests if running as global
-        if self.ctx.chained:
+        if self.ctx.chained or self.ctx.subject is not empty:
             self.test._trigger()
 
         return self.test
