@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import re
 import six
 from ..empty import empty
 
@@ -72,6 +73,11 @@ class BaseReporter(object):
 
         if '{length}' in tmpl:
             placeholders['length'] = self.safe_length(value)
+
+        custom_properties = re.findall('{%(.*?)%}', tmpl)
+
+        for custom_property in custom_properties:
+            placeholders['%' + custom_property + '%'] = getattr(value, custom_property, 0)
 
         return tmpl.format(**placeholders)
 
