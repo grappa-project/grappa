@@ -32,6 +32,8 @@ def test_raises(should):
     with pytest.raises(AssertionError):
         no_error | should.raise_error(AssertionError)
 
+    no_error | should.do_not.raise_error(AssertionError)
+
 
 def test_raises_with_message_redirection(should):
     def error():
@@ -41,6 +43,7 @@ def test_raises_with_message_redirection(should):
         raise EnvironmentError(3501, 'bar')
 
     error | should.raise_error(AssertionError) > should.equal('foo')
+    error | should.raise_error(AssertionError) > should.do_not.equal('fooed')
 
     error | should.raise_error(AssertionError) > should.contain('fo')
 

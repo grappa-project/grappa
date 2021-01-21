@@ -15,8 +15,6 @@ class ErrorTemplate(object):
 
     section_separator = '\n\n  '
 
-    header = 'Oops! Something went wrong!'
-
     def __init__(self):
         self.sections = []
 
@@ -69,5 +67,5 @@ class ErrorTemplate(object):
             ))
             return buf
 
-        sections = functools.reduce(add_section, self.sections, [self.header])
+        sections = functools.reduce(add_section, self.sections, [])
         return self.section_separator.join(sections)

@@ -131,7 +131,7 @@ class BeenCalledTimesOperator(Operator):
     kind = Operator.Type.MATCHER
 
     # Disable diff report
-    show_diff = True
+    show_diff = False
 
     # Operator keywords
     operators = ('been_called_times',)
@@ -143,8 +143,8 @@ class BeenCalledTimesOperator(Operator):
     )
 
     subject_message = Operator.Dsl.Message(
-        'a mock that has been called {call_count} times',
         'a mock that has not been called {call_count} times',
+        'a mock that has been called {call_count} times',
     )
 
     @mock_implementation_validator

@@ -6,7 +6,7 @@ Contents
 
    intro
    getting-started
-   style
+   assertions-styles
    error-reporting
    attributes-operators
    accessors-operators

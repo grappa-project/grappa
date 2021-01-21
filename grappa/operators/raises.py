@@ -58,7 +58,7 @@ class RaisesOperator(Operator):
     def after_success(self, obj, *keys):
         message = getattr(self.value, 'message', None)
 
-        if not message:
+        if not message and self.value:
             message = ' '.join([str(item) for item in self.value.args])
 
         self.ctx.subject = message

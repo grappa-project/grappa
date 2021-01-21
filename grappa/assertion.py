@@ -21,6 +21,8 @@ class AssertionProxy(BaseTest):
             raise RuntimeError('grappa: operator already called')
         if not self._called:
             self._called = True
+
+        __tracebackhide__ = True
         return self._fn(expected, *args, **kw)
 
     def _match_alias(self, name):

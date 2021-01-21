@@ -37,68 +37,73 @@ See `documentation`_ and `getting started`_ for more examples.
 
 .. code-block:: python
 
-    from grappa import should
+      # should style
+      from grappa import should
 
-    True | should.be.true
-    False | should.be.false
-    None | should.be.none
+      True | should.be.true
+      False | should.be.false
+      None | should.be.none
 
-    '' | should.be.empty
-    [] | should.be.empty
-    'foo' | should.exists
+      3.14 | should.be.lower.than(4)
+      3.14 | should.be.higher.than(3)
+      3.14 | should.be.within(2, 4)
 
-    3.14 | should.be.lower.than(4)
-    3.14 | should.be.higher.than(3)
-    3.14 | should.be.within(2, 4)
+      'hello, grappa' | should.starts_with('hello')
+      'hello, grappa' | should.ends_with('grappa')
+      [1, 2, 3, 4] | should.starts_with(1)
+      [1, 2, 3, 4] | should.ends_with(4)
 
-    'bar' | should.be.equal.to('bar', msg='value is not "bar"')
-    [1, 2, 3] | should.be.equal.to([1, 2, 3])
+      'Hello grappa' | should.match('(\W)+ grappa$')
+      'Hello grappa' | should.contain('grappa') | should.contain('he')
+      ['foo', 'bar'] | should.contain('foo') | should.do_not.contain('baz')
 
-    'hello, grappa' | should.startswith('hello')
-    'hello, grappa' | should.endswith('grappa')
-    [1, 2, 3, 4] | should.startswith(1)
-    [1, 2, 3, 4] | should.endswith(4)
+      'foo' | should.pass_test(lambda x: x in 'foo bar')
+      'foo' | should.pass_function(lambda x: len(x) > 2)
 
-    'Hello grappa' | should.match('(\W)+ grappa$')
-    'Hello grappa' | should.contain('grappa') | should.contain('he')
-    ['foo', 'bar'] | should.contain('foo') | should.do_not.contain('baz')
+      {'foo': 'bar'} | should.have.key('foo').that.should.be.equal('bar')
+      (1, 2, 3, 4) | should.be.a(tuple) > should.have.index.at(3) > should.be.equal.to(4)
 
-    'foo' | should.be.a('string')
-    {'foo': True} | should.be.a('dict')
+      {'foo': True, 'bar': False} | should.all(should.have.key('foo'), should.have.key('bar'))
+      {'foo': True, 'bar': False} | should.any(should.have.key('foo'), should.have.key('baz'))
 
-    iter([1, 2, 3]) | should.have.length.of(3)
-    [1, 2, 3] | should.be.a('list') > should.have.length.of(3)
+      ({'bar': [1, 2, 3]}
+         | should.have.key('bar')
+         > should.be.a('list')
+         > should.have.length.of(3)
+         > should.contain.item(3)
+         > should.have.index.at(1)
+         > should.be.equal.to(2))
 
-    (lambda x: x) | should.be.callable
-    (lambda x: x) | should.not_have.type.of('generator')
 
-    'foo' | should.pass_test(lambda x: x in 'foo bar')
-    'foo' | should.pass_function(lambda x: len(x) > 2)
+      # expect style
+      from grappa import expect
 
-    (lambda: x) | should.raises(NameError)
-    (lambda: x) | should.does_not.raises(RuntimeError)
+      expect('').to.be.empty
+      expect([]).to.be.empty
+      expect('foo').to.exists
 
-    {'foo': 'bar'} | should.have.key('foo').that.should.be.equal('bar')
-    (1, 2, 3, 4) | should.be.a(tuple) > should.have.index.at(3) > should.be.equal.to(4)
+      expect('bar').to.be.equal.to('bar', msg='value is not "bar"')
+      expect([1, 2, 3]).to.equal([1, 2, 3])
 
-    an_object | should.have.properties('foo', 'bar', 'baz')
-    an_object | should.implement.methods('foo', 'bar', 'baz')
+      expect('foo').to.be.a('string')
+      expect({'foo': True}).to.be.a('dict')
 
-    {'foo': True, 'bar': False} | should.all(should.have.key('foo'), should.have.key('bar'))
-    {'foo': True, 'bar': False} | should.any(should.have.key('foo'), should.have.key('baz'))
+      expect(iter([1, 2, 3])).to.have.length.of(3)
+      expect([1, 2, 3]).to.be.a('list') > should.have.length.of(3)
 
-    ({'bar': [1, 2, 3]}
-        | should.have.key('bar')
-        > should.be.a('list')
-        > should.have.length.of(3)
-        > should.contain.item(3)
-        > should.have.index.at(1)
-        > should.be.equal.to(2))
+      expect(lambda x: x).to.be.callable
+      expect(lambda x: x).to.not_have.type.of('generator')
 
-    with should('foo'):
-        should.be.a(str)
-        should.have.length.of(3)
-        should.be.equal.to('foo')
+      expect(lambda: x).to.raise_error(NameError) > expect.to.be('Invalid argument')
+      ecpect(lambda: x).to_not.raise_error(RuntimeError)
+
+      expect(an_object).to.have.properties(('foo', 'bar', 'baz'))
+      expect(an_object).to.implement.methods(['foo', 'bar', 'baz'])
+
+      with expect('foo'):
+         to.be.a(str)
+         to.have.length.of(3)
+         to.be.equal.to('foo')
 
 
 Let's see how the error report looks like in ``grappa`` running in ``pytest``.
@@ -110,7 +115,9 @@ See `error reporting`_ documentation for more details about how ``grappa`` error
     ======================================================================
     FAIL: tests.should_test.test_grappa_assert
     ======================================================================
-    The following assertion was not satisfied
+    File "grappa/tests/should_test.py", line 16, in test_grappa_assert
+    x | should.be.have.length.of(4)
+    AssertionError: The following assertion was not satisfied
       subject "[1, 2, 3]" should be have length of "4"
 
     Message
@@ -219,7 +226,7 @@ Or install the latest sources from Github:
 .. _`getting started`: http://grappa.readthedocs.io/en/latest/getting-started.html
 .. _`plugins`: http://grappa.readthedocs.io/en/latest/plugins.html
 .. _`error reporting`: http://grappa.readthedocs.io/en/latest/error-reporting.html
-.. _`assertion styles`: http://grappa.readthedocs.io/en/latest/style.html
+.. _`assertion styles`: http://grappa.readthedocs.io/en/latest/assertions-styles.html
 .. _`grappa-http`: https://github.com/grappa-py/http
 
 .. |Build Status| image:: https://travis-ci.org/grappa-py/grappa.svg?branch=master

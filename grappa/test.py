@@ -70,6 +70,8 @@ class Test(BaseTest):
             grappa.Test: new test instance with the given subject.
         """
         self._ctx.subject = subject
+
+        __tracebackhide__ = True
         return self._trigger() if overload else Test(subject)
 
     def __getattr__(self, name):
@@ -87,6 +89,7 @@ class Test(BaseTest):
             return Test(subject).__getattr__(name)
 
         # Resolve and register operator by name
+        __tracebackhide__ = True
         return OperatorResolver(self).resolve(name)
 
     def _trigger(self):
@@ -110,6 +113,7 @@ class Test(BaseTest):
 
         # If error is present, raise it!
         if err:
+            __tracebackhide__ = True
             raise err
 
         return self
@@ -190,27 +194,33 @@ class Test(BaseTest):
             fork._ctx.chained = True
             fork._ctx.subject = self._ctx.subject
             # Trigger assertions
+
+            __tracebackhide__ = True
             return fork._trigger()
 
         # Otherwise invoke the test function with a subject
+        __tracebackhide__ = True
         return self.__call__(subject, overload=True)
 
     def __or__(self, value):
         """
         Overloads ``|`` as from left-to-right operator precedence expression.
         """
+        __tracebackhide__ = True
         return self.__overload__(value)
 
     def __ror__(self, value):
         """
         Overloads ``|`` operator.
         """
+        __tracebackhide__ = True
         return self.__overload__(value)
 
     def __gt__(self, value):
         """
         Overloads ``>`` operator.
         """
+        __tracebackhide__ = True
         return self.__overload__(value)
 
     def __enter__(self):

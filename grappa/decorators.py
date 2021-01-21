@@ -117,7 +117,7 @@ def mock_implementation_validator(func):
         expected_props = ('called', 'call_count')
         reasons = functools.reduce(validate_props, expected_props, [])
 
-        expected_methods = ('assert_called_with', 'assert_called_once_with')
+        expected_methods = ('assert_any_call',)
         reasons = functools.reduce(validate_methods, expected_methods, reasons)
 
         if reasons:

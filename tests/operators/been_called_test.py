@@ -51,8 +51,10 @@ def test_been_called_times(expect, mocker):
 def test_been_called_with(expect, mocker):
     mock_called = mocker.patch('os.path.join')
     os.path.join('home', 'log.txt')
+    os.path.join('root', 'config.json')
 
     expect(mock_called).to.have.been_called_with('home', 'log.txt')
+    expect(mock_called).to.have.been_called_with('root', 'config.json')
 
     with pytest.raises(AssertionError):
         expect(mock_called).to.have_not.been_called_with('home', 'log.txt')
@@ -112,6 +114,11 @@ def test_been_called_once_with(expect, mocker):
     os.rename('/home/log.txt', '/home/log_new.txt')
 
     expect(mock_called_several_times).to.have_not.been_called_once
+
+    with pytest.raises(AssertionError):
+        expect(mock_called_several_times).to.have.been_called_once_with(
+            '/home/log.txt', '/home/log_new.txt'
+        )
 
     with pytest.raises(AssertionError):
         expect(mock_called_several_times).to.have.been_called_once

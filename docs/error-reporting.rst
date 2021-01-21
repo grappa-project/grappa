@@ -1,4 +1,4 @@
-Error Reporting
+Error reporting
 ===============
 
 Feedback while testing is key. Seeing errors in your tests is not a nice thing
@@ -59,17 +59,7 @@ Now, a ``grappa`` error report using ``nosetests``:
     self.test(*self.arg)
     File "grappa/tests/should_test.py", line 16, in test_grappa_assert
     x | should.be.have.length.of(4)
-    File "grappa/grappa/test.py", line 248, in __ror__
-    return self.__overload__(value)
-    File "grappa/grappa/test.py", line 236, in __overload__
-    return self.__call__(subject, overload=True)
-    File "grappa/grappa/test.py", line 108, in __call__
-    return self._trigger() if overload else Test(subject)
-    File "grappa/grappa/test.py", line 153, in _trigger
-    raise err
-    AssertionError: Oops! Something went wrong!
-
-    The following assertion was not satisfied
+    AssertionError: The following assertion was not satisfied
     subject "[1, 2, 3]" should be have length of "4"
 
     Reasons

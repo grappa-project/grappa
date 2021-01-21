@@ -67,14 +67,16 @@ class KeysOperator(Operator):
     LIST_TYPES = (tuple, list, set, array)
 
     def after_success(self, obj, *keys):
-        if not self.ctx.negate:
-            self.ctx.subject = [obj[x] for x in obj if x in keys]
+        if self.ctx.negate:
+            return
+
+        if len(keys) == 1 and isinstance(keys[0], self.LIST_TYPES):
+            keys = list(keys[0])
+
+        self.ctx.subject = [obj[x] for x in obj if x in keys]
 
         if len(keys) == 1 and len(self.ctx.subject):
-            if isinstance(self.ctx.subject, list):
-                self.ctx.subject = self.ctx.subject[0]
-            else:
-                self.ctx.subject = list(self.ctx.subject.keys())[0]
+            self.ctx.subject = self.ctx.subject[0]
 
     def match(self, subject, *keys):
         if not isinstance(subject, collections_abc.Mapping):

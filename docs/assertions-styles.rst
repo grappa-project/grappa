@@ -1,4 +1,4 @@
-Assertion Styles
+Assertion styles
 ================
 
 ``grappa`` is a behavior-oriented library that comes in two flavors: ``expect`` and ``should``.
